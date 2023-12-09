@@ -1,0 +1,303 @@
+\documentclass[12pt]{article}
+\usepackage[paper=letterpaper,margin=2cm]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{newtxtext, newtxmath}
+\usepackage{enumitem}
+\usepackage{titling}
+\usepackage[colorlinks=true]{hyperref}
+
+\setlength{\droptitle}{-6em}
+
+% Enter the specific assignment number and topic of that assignment below, and replace "Your Name" with your actual name.
+\title{CS-E4850 Computer Vision
+\\Exercise Round 1}
+\author{Amirreza Akbari}
+\date{\today}
+
+\begin{document}
+\maketitle
+\begin{enumerate}[leftmargin=\labelsep]
+\item Homogeneous coordinates.
+    \begin{enumerate}
+    \item The equation of a line in the plane is
+    \begin{equation}\label{equ:points-on-the-line}
+        ax + by + c = 0
+    \end{equation}
+    Show that by using homogeneous coordinates this can be written as
+    \begin{equation}
+        x^Tl = 0
+    \end{equation}
+    where $l = (a,\,b,\,c)^T$.
+    
+    \textbf{Solution:} 
+    We are talking about points lies on the line in the plane. As far as we know, a point lies on the line $(a,\,b,\,c)$ if and only if $ax+by+c = 0$. This point $(x,\,y)$ in $\mathbb{R}^2$ can be also represent in $\mathbb{R}^3$ by adding a final coordinate $1$. We can also represent the Equation \ref{equ:points-on-the-line} as inner product of two vectors $(x,\,y,\,1)$ and $(a,\,b,\,c)^T$. To consider the set of vectors $(kx,\,ky,\,k)^T$ for varying values of $k$ to be a representation of the point $(x,\,y)^T$ in $\mathbb{R}^2$, because $(kx,\,ky,\,k)l = 0$ if and only if $(x,\,y,\,1)l = 0$. Thus, just as with lines, points are represented by homogeneous vectors. An arbitrary homogeneous vector representative of a point is of the form $x = (x_1, x_2, x_3)^T$, representing the point $(\frac{x1}{x3}, \frac{x2}{x3})^T$ in $\mathbb{R}^2$. Points, then, as homogeneous vectors are also elements of $\mathbb{P}^2$.
+    
+    \item  Show that the intersection of two lines $l$ and $l'$ is the point $x = l \times l'$.
+    
+    \textbf{Solution:} It is clear that for intersection we need a point $x$ that satisfies in both equations $x^Tl = 0$ and $x^Tl' = 0$. Let $x = l \times l'$. It is clear that due to the hint, $l^T(l\times l') = {l'}^T(l \times l') = 0$, because two of vectors in the scalar triple product are parallel. Therefore, $x^T l = x^T l' = 0$, so $x$ satisfies both equations.
+    \item  Show that the line through two points $x$ and $x'$ is $l = x \times x'$.
+    
+    \textbf{Solution:}
+    Again, we need a line $l$ that holds the following equation:
+    \begin{equation}\label{equ:two-point-on-a-line}
+        x^Tl = x^Tl' = 0
+    \end{equation}
+    Consider $l = (x \times x')$, due to the scalar triple product hint, $x^T(x\times x') = x'^T(x\times x') = 0 $, so $(x \times x')$ can be a line that satisfies the Equation \ref{equ:two-point-on-a-line}.
+    \item  Show that for all $\alpha \in \mathbb{R}$ the point $y = \alpha x + (1 - \alpha)x'$ lies on the line through points $x$ and $x'$.
+    
+    \textbf{Solution:} According to previous part, $l = x \times x'$. As we know inner product is a linear function, so $y^T l = \alpha x^Tl + (1-\alpha) x'^Tl = 0 + 0$; so $y$ is also on this line.
+    \end{enumerate}
+
+\item  Transformations in 2D
+    \begin{enumerate}
+    \item  Use homogeneous coordinates and give the matrix representations of the following transformation groups: translation, Euclidean transformation (rotation+translation), similarity transformation (scaling+rotation+translation), affine transformation, projective transformation.
+    
+    \textbf{Solution:}
+    \begin{itemize}
+        \item Translation:
+        \begin{equation}
+            \begin{pmatrix}
+            x+t_x \\
+            y+t_y \\
+            1 
+            \end{pmatrix}= 
+            \begin{pmatrix}
+            1 & 0 &  t_x \\
+            0 & 1 & t_y \\
+            0 & 0 & 1
+            \end{pmatrix}
+            \begin{pmatrix}
+            x \\
+            y \\
+            1 
+            \end{pmatrix}
+        \end{equation}
+        \item Euclidean:
+            \begin{equation}
+                \begin{pmatrix}
+                1& 0 &  t_x \\
+                0 & 1 & t_y \\
+                0 & 0 & 1
+                \end{pmatrix}
+                \begin{pmatrix}
+                    cos(\theta) & -sin(\theta) & 0 \\
+                    sin(\theta) & cos(\theta) & 0 \\
+                    0 & 0 & 1
+                \end{pmatrix}= 
+                \begin{pmatrix}
+                    cos(\theta) & -sin(\theta) &  t_x \\
+                    sin(\theta) & cos(\theta) & t_y \\
+                    0 & 0 & 1
+                \end{pmatrix}
+            \end{equation}
+            \begin{equation}
+            \Rightarrow
+            \begin{pmatrix}
+                cos(\theta) & -sin(\theta) &  t_x \\
+                sin(\theta) & cos(\theta) & t_y \\
+                0 & 0 & 1
+                \end{pmatrix}
+                \begin{pmatrix}
+                    x \\
+                    y \\
+                    1 
+                \end{pmatrix}
+                =
+                    \begin{pmatrix}
+                    x' \\
+                    y' \\
+                    1 
+                    \end{pmatrix}
+            \end{equation}
+        \item Similarity:
+        \begin{equation}
+        \begin{pmatrix}
+    1 & 0 &  t_x \\
+    0 & 1 & t_y \\
+0 & 0 & 1
+\end{pmatrix}
+\begin{pmatrix}
+a & 0 &  0 \\
+0 & a & 0 \\
+0 & 0 & 1
+\end{pmatrix}
+\begin{pmatrix}
+cos(\theta) & -sin(\theta) &  t_x \\
+sin(\theta) & cos(\theta) & t_y \\
+0 & 0 & 1
+\end{pmatrix}
+=
+\begin{pmatrix}
+a\ cos(\theta) & -a\ sin(\theta) &  t_x \\
+a\ sin(\theta) & a\ cos(\theta) & t_y \\
+0 & 0 & 1
+\end{pmatrix}
+\end{equation}
+
+    \begin{equation}
+    \Rightarrow 
+\begin{pmatrix}
+a\ cos(\theta) & -a\ sin(\theta) &  t_x \\
+a\ sin(\theta) & a\ cos(\theta) & t_y \\
+0 & 0 & 1
+\end{pmatrix}
+\begin{pmatrix}
+        x \\
+        y \\
+        1 
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+        x' \\
+        y' \\
+        1 
+        \end{pmatrix}
+\end{equation}
+
+\item Affine:
+\begin{equation}
+     \begin{pmatrix}
+a_1 & a_2 &  t_x \\
+a_3 & a_4 & t_y \\
+0 & 0 & 1
+    \end{pmatrix}
+    \begin{pmatrix}
+        x \\
+        y \\
+        1 
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+        x' \\
+        y' \\
+        1 
+        \end{pmatrix}
+\end{equation}
+
+\item Projective:
+
+  \begin{equation}
+  \begin{pmatrix}
+h_1 & h_2 &  h_3 \\
+h_4 & h_5 & h_6 \\
+h_7 & h_8 & 1
+\end{pmatrix}
+\begin{pmatrix}
+        x \\
+        y \\
+        1 
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+        u \\
+        v \\
+        w 
+        \end{pmatrix}
+\end{equation}
+
+   \begin{equation}
+   x'=\frac{u}{w}\ \  , \ \  y'=\frac{v}{w}
+    \end{equation}
+    \end{itemize}
+\item  What is the number of degrees of freedom in these transformations?
+
+\textbf{Solution:}
+\begin{itemize}
+    \item Translation: DoF=2
+    \item Euclidean: DoF= 3
+    \item Similarity: DoF=4
+    \item Affine: DoF=6
+    \item Projective: DoF=8
+\end{itemize}
+\item  Why is the number of degrees of freedom in a projective transformation less than the number of elements in a $3\times3$ matrix?
+
+\textbf{Solution:}
+        Let consider the following $3 \times 3$ matrix:
+        \begin{equation}
+        \begin{pmatrix}
+        a_{1,1} & a_{1,2} & a_{1,3} \\
+        a_{2,1} & a_{2,2} & a_{2,3} \\
+        a_{3,1} & a_{3,2} & a_{3,3}
+        \end{pmatrix}
+        \end{equation}
+        Now we apply this matrix on our homogeneous $3$-vector.
+        \begin{equation}
+        k'\begin{pmatrix}
+        x' \\
+        y' \\
+        1
+        \end{pmatrix} = \begin{pmatrix}
+        a_{1,1} & a_{1,2} & a_{1,3} \\
+        a_{2,1} & a_{2,2} & a_{2,3} \\
+        a_{3,1} & a_{3,2} & a_{3,3}
+        \end{pmatrix} k \begin{pmatrix}
+        x \\
+        y \\
+        1
+        \end{pmatrix}
+        \end{equation}
+        $k'$ and $k$ are just homogeneous scaling factors that are pulled outside of the homogeneous vectors. Therefore, we have
+         \begin{equation}
+        \frac{k'}{k}\begin{pmatrix}
+        x' \\
+        y' \\
+        1
+        \end{pmatrix} = \begin{pmatrix}
+        \frac{a_{1,1}}{a_{3,3}} & \frac{a_{1,2}}{a_{3,3}} & \frac{a_{1,3}}{a_{3,3}} \\
+        \frac{a_{2,1}}{a_{3,3}} & \frac{a_{2,2}}{a_{3,3}} & \frac{a_{2,3}}{a_{3,3}} \\
+        \frac{a_{3,1}}{a_{3,3}} & \frac{a_{3,2}}{a_{3,3}} & 1
+        \end{pmatrix}\begin{pmatrix}
+        x \\
+        y \\
+        1
+        \end{pmatrix}
+        \end{equation}
+        Now take $w = \frac{k'}{k}$, and we have:
+        \begin{equation}
+        \begin{pmatrix}
+        u \\
+        v \\
+        w
+        \end{pmatrix} = \begin{pmatrix}
+        \frac{a_{1,1}}{a_{3,3}} & \frac{a_{1,2}}{a_{3,3}} & \frac{a_{1,3}}{a_{3,3}} \\
+        \frac{a_{2,1}}{a_{3,3}} & \frac{a_{2,2}}{a_{3,3}} & \frac{a_{2,3}}{a_{3,3}} \\
+        \frac{a_{3,1}}{a_{3,3}} & \frac{a_{3,2}}{a_{3,3}} & 1
+        \end{pmatrix}\begin{pmatrix}
+        x \\
+        y \\
+        1
+        \end{pmatrix}
+        \end{equation}
+        So it is right that our matrix had nine elements at the begining, but now only eight of them are independent. As such, it follows that a projective transformation has eight degrees of freedom which is less than nine.
+\end{enumerate}
+\item Planar projective transformation\\
+The equation of a line on a plane, $ax + by + c = 0$, can be written as $l^Tx= 0$, where
+$l = [a\,b\,c]^T$
+and $x$ are homogeneous coordinates for lines and points, respectively. Under a planar projective transformation, represented with an invertible $3\times3$ matrix $H$, points transform as
+$$x' = Hx$$
+    \begin{enumerate}
+        \item Given the matrix $H$ for transforming points, as defined above, define the line transformation (i.e. transformation that gives $l'$ which is a transformed version of $l$).
+        
+        \textbf{Solution:} It is clear that because $H$ is invertible, there is a matrix $H^{-1}$. It is clear that $l^Tx = x^Tl=0$ gives us the equation $l^TH^{-1}Hx = 0$. This means that all of the point $x'= Hx$ lie on the line $l'^T=l^TH^{-1}$. Thus, the transformed version of $l$ is as follows:
+        $$l'^T = l^TH^{-1}$$
+        \item A projective invariant is a quantity which does not change its value in the transformation. Using the transformation rules for points and lines, show that two lines, $l_1$, $l_2$, and
+two points, $x_1$, $x_2$, not lying on the lines have the following invariant under projective
+transformation: 
+
+\textbf{Solution:} Consider transformed version of lines and points as below:
+        \begin{gather}
+              l'^T_1 = {l^T}_1 H^{-1}\\
+              l'^T_2 = {l^T}_2 H^{-1}\\
+              x'_1 = Hx_1\\
+              x'_2 = Hx_2
+        \end{gather}
+        Now we check the invariant function after the transformation:
+        \begin{equation}
+            I' = \frac{(l'^T_1x'_1)(l'^T_2x'_2)}{(l'^T_1x'_2)(l'^T_2x'_1)} = \frac{({l^T}_1 H^{-1}Hx_1)({l^T}_2 H^{-1}Hx_2)}{({l^T}_1 H^{-1}Hx_2)({l^T}_2 H^{-1}Hx_1)} = \frac{(l^T_1x_1)(l^T_2x_2)}{(l^T_1x_2)(l^T_2x_1)} = I
+        \end{equation}
+        So we have the above invariant under projective transformation, and also projective invariants defined via homogeneous coordinates must be invariant also to arbitrary scaling of the homogeneous coordinate vectors with a non-zero scaling factor, so if we use fewer number of lines of number of points, this will not be an invariant, because they might be an extra factor $k$ stands in numerator or denominator.
+     \end{enumerate}
+\end{enumerate}
+\end{document}
